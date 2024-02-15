@@ -22,18 +22,22 @@ class EnderecoController extends Controller
     }
 
     public function busca(Request $request){
+        try{
 
-        $cep = $request->cep;
-        $response = Http::get("https://viacep.com.br/ws/$cep/json/")->json();
-        
-        return view('adicionar')->with([
-            'cep' => $cep,
-            'logradouro' => $response['logradouro'],
-            'bairro' => $response['bairro'],
-            'localidade' => $response['localidade'],
-            'uf' => $response['uf'],
-
-        ]);
+            $cep = $request->cep;
+            $response = Http::get("https://viacep.com.br/ws/$cep/json/")->json();
+            
+            return view('adicionar')->with([
+                'cep' => $cep,
+                'logradouro' => $response['logradouro'],
+                'bairro' => $response['bairro'],
+                'localidade' => $response['localidade'],
+                'uf' => $response['uf'],
+    
+            ]);
+        }catch( Exception $e ){
+            return $e->getMessage();
+        }
         
     }
 
